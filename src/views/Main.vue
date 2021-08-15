@@ -5,12 +5,12 @@
     <input type="search" placeholder="Enter word for search joke" v-model="search">
   </div>
     <div class="boxJoke">
-      <div class="itemJoke" v-for="joke in searchJoke" :key="joke.id">
+      <div class="itemJoke" v-for="joke in searchJoke" :key="joke.id"
+           v-bind:class="{itemJokeActive: isActive}">
         <p>{{joke.joke}}</p>
-        <p class="like" @click="like">♥︎</p>
+        <p class="like"  @click="like" v-bind:class="{likeActive: isActive}">♥︎</p>
       </div>
     </div>
-
   </div>
 
 </template>
@@ -24,6 +24,7 @@ export default {
     return{
       search: '',
       jokes: [],
+      isActive: false
     }
   },
   created() {
@@ -39,12 +40,13 @@ export default {
   computed: {
     searchJoke(){
       return this.jokes.filter(({joke})=>joke.toUpperCase().includes(this.search.toUpperCase()))
-    }
+    },
   },
 
   methods: {
-    like(){
-    }
+    like(event){
+      event.target.classList.toggle('likeActive')
+    },
   }
 }
 </script>
@@ -86,22 +88,19 @@ export default {
   align-items: center
 }
 
-.itemJoke:active {
+.itemJokeActive {
   background-color: lightgreen;
 }
 
 .like {
   font-size: 150%;
   padding: 10px;
-}
-
-.like:hover {
-  color: red;
   cursor: pointer;
 }
 
-.like:active {
-  color: whitesmoke;
+.likeActive {
+  color: red;
+  cursor: pointer;
 }
 
 
