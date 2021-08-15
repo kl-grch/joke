@@ -1,9 +1,11 @@
 <template>
   <div class="content">
     <h1>10 random joke's</h1>
+
   <div class="searchJoke">
     <input type="search" placeholder="Enter word for search joke" v-model="search">
   </div>
+
     <div class="boxJoke">
       <div class="itemJoke" v-for="joke in searchJoke" :key="joke.id"
            v-bind:class="{itemJokeActive: isActive}">
@@ -11,6 +13,7 @@
         <p class="like"  @click="like" v-bind:class="{likeActive: isActive}">♥︎</p>
       </div>
     </div>
+
   </div>
 
 </template>
@@ -45,9 +48,10 @@ export default {
 
   methods: {
     like(event){
-      event.target.classList.toggle('likeActive')
-    },
-  }
+      event.target.parentElement.classList.toggle('itemJokeActive');
+      event.target.classList.toggle('likeActive');
+      },
+    }
 }
 </script>
 
@@ -89,7 +93,7 @@ export default {
 }
 
 .itemJokeActive {
-  background-color: lightgreen;
+  background: lightgreen;
 }
 
 .like {
