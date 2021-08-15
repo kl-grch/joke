@@ -1,17 +1,18 @@
 <template>
   <div class="content">
-    <h1>10 лучших шуток</h1>
+    <h1>10 random joke's</h1>
   <div class="searchJoke">
-    <input type="search" placeholder="Введите слово для поиска среди анекдотов" v-model="search">
+    <input type="search" placeholder="Enter word for search joke" v-model="search">
   </div>
     <div class="boxJoke">
-      <div class="itemJoke" v-for="joke in jokes" :key="joke.id">
-        <p>{{joke}}</p>
-        <p>♥︎</p>
+      <div class="itemJoke" v-for="joke in searchJoke" :key="joke.id">
+        <p>{{joke.joke}}</p>
+        <p class="like" @click="like">♥︎</p>
       </div>
     </div>
 
   </div>
+
 </template>
 
 <script>
@@ -22,32 +23,28 @@ export default {
   data(){
     return{
       search: '',
-      jokes: {},
+      jokes: [],
     }
   },
-  methods: {},
   created() {
-    axios
-        .get(
-            "https://v2.jokeapi.dev/joke/Programming?type=single&amount=10",
-            {
-              headers: {
-                Accept: "application/json"
-              },
-/*
-              params: {
-                limit: 10
-              }
-*/
-            }
-        )
+    axios.get("https://v2.jokeapi.dev/joke/Programming?type=single&amount=10")
         .then(response => {
-          this.jokes.jokes = response.data;
-          console.log(response.data);
+          this.jokes = response.data.jokes;
+          console.log(response.data.jokes);
         })
         .catch(err => {
           alert(err);
         });
+  },
+  computed: {
+    searchJoke(){
+      return this.jokes.filter(({joke})=>joke.toUpperCase().includes(this.search.toUpperCase()))
+    }
+  },
+
+  methods: {
+    like(){
+    }
   }
 }
 </script>
@@ -85,7 +82,27 @@ export default {
   margin: 10px;
   padding: 10px;
   display: flex;
-  justify-content: space-between
-
+  justify-content: space-between;
+  align-items: center
 }
+
+.itemJoke:active {
+  background-color: lightgreen;
+}
+
+.like {
+  font-size: 150%;
+  padding: 10px;
+}
+
+.like:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.like:active {
+  color: whitesmoke;
+}
+
+
 </style>
