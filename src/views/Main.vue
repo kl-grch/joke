@@ -23,35 +23,40 @@ import axios from "axios";
 export default {
   name: 'Main',
   components: axios,
-  data(){
-    return{
+  data() {
+    return {
       search: '',
       jokes: [],
       isActive: false
     }
   },
+
   created() {
     axios.get("https://v2.jokeapi.dev/joke/Programming?type=single&amount=10")
         .then(response => {
           this.jokes = response.data.jokes;
-          console.log(response.data.jokes);
         })
         .catch(err => {
           alert(err);
         });
   },
+
   computed: {
-    searchJoke(){
-      return this.jokes.filter(({joke})=>joke.toUpperCase().includes(this.search.toUpperCase()))
+    searchJoke() {
+      return this.jokes.filter(({joke}) => joke.toUpperCase().includes(this.search.toUpperCase()))
     },
+
   },
 
   methods: {
-    like(event){
+    like(event) {
       event.target.parentElement.classList.toggle('itemJokeActive');
       event.target.classList.toggle('likeActive');
-      },
-    }
+      // this.$store.commit('addToLikeJokes')
+    },
+
+  },
+
 }
 </script>
 
